@@ -15,52 +15,66 @@ export function Profile() {
   const [isEditing, setIsEditing] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        if (typeof window === "undefined") return
+ useEffect(() => {
+  const checkAuth = async () => {
+    try {
+      if (typeof window === "undefined") return
 
-        const params = new URLSearchParams(window.location.search)
-        const tokenFromUrl = params.get("token")
-        const storedToken = localStorage.getItem("token")
-        const token = tokenFromUrl || storedToken
+      const params = new URLSearchParams(window.location.search)
+      const tokenFromUrl = params.get("token")
+      const storedToken = localStorage.getItem("token")
 
-        if (tokenFromUrl) {
-          localStorage.setItem("token", tokenFromUrl)
-          window.history.replaceState({}, document.title, "/")
-        }
+      let token = tokenFromUrl || storedToken
 
-        if (!token) {
-          window.location.href = "http://localhost:3000"
-          return
-        }
+      // Si token de URL viene, lo guardamos y limpiamos URL
+      if (tokenFromUrl) {
+        localStorage.setItem("token", tokenFromUrl)
+        token = tokenFromUrl
+        window.history.replaceState({}, document.title, "/")
+      }
 
-        const res = await fetch("http://localhost:8080/api/usuario/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+      // Validar token antes del fetch
+      if (!token || token === "null") {
+        localStorage.removeItem("token")
+        alert("Sesión no válida o expirada.")
+        window.location.href = "https://front-end-loggin.vercel.app/"
+        return
+      }
 
-        if (!res.ok) throw new Error("Token inválido o expirado")
+      // Petición al backend
+      const res = await fetch("https://api-usuario-tj78.onrender.com/api/usuario/me", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
 
-        const data = await res.json()
+      if (!res.ok) throw new Error("Token inválido o expirado")
+
+      const data = await res.json()
+
+      // Solo setear userData si el backend devuelve algo
+      if (data && data.usuario) {
         setUserData(data.usuario)
         setOriginalData(data.usuario)
-      } catch (err) {
-        console.error("Error en autenticación:", err)
-        alert("Sesión no válida o expirada.")
-        localStorage.removeItem("token")
-        window.location.href = "http://localhost:3000"
+      } else {
+        throw new Error("No se pudo cargar el usuario")
       }
+    } catch (err) {
+      console.error("Error en autenticación:", err)
+      alert("Sesión no válida o expirada.")
+      localStorage.removeItem("token")
+      window.location.href = "https://front-end-loggin.vercel.app/"
     }
+  }
 
-    checkAuth()
-  }, [router])
+  checkAuth()
+}, [router])
+
 
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token")
       if (!token) return alert("Sesión expirada.")
 
-      const res = await fetch("http://localhost:8080/api/usuario/actualizarDatos", {
+      const res = await fetch("https://api-usuario-tj78.onrender.com/api/usuario/actualizarDatos", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -83,17 +97,17 @@ export function Profile() {
       const data = await res.json()
       setUserData(data.usuario)
       setOriginalData(data.usuario)
-      alert("✅ Datos actualizados correctamente")
+      alert("Datos actualizados correctamente")
       setIsEditing(false)
     } catch (err) {
       console.error(err)
-      alert("❌ No se pudo actualizar el usuario.")
+      alert("No se pudo actualizar el usuario.")
     }
   }
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/usuario/eliminar/${userData.email}`, {
+      const response = await fetch(`https://api-usuario-tj78.onrender.com/api/usuario/eliminar/${userData.email}`, {
         method: "DELETE",
       })
 
@@ -102,7 +116,7 @@ export function Profile() {
         localStorage.removeItem("token")
         setUserData(null)
         setShowDeleteConfirm(false)
-        window.location.href = "http://localhost:3000"
+        window.location.href = "https://front-end-loggin.vercel.app/"
       } else {
         const errorData = await response.json()
         alert(`Error: ${errorData.mensaje}`)
@@ -115,8 +129,8 @@ export function Profile() {
 
   const handleLogout = () => {
     localStorage.removeItem("token")
-    alert("👋 Sesión cerrada correctamente")
-    window.location.href = "http://localhost:3000"
+    alert("Sesión cerrada correctamente")
+    window.location.href = "https://front-end-loggin.vercel.app/"
   }
 
   if (!userData || !userData.nombre) {

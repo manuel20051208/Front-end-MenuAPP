@@ -21,7 +21,7 @@ export function Sleep() {
   const [bedtime, setBedtime] = useState("")
   const [wakeup, setWakeup] = useState("")
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null
-  const API = "http://localhost:8080/api/sueno"
+  const API = "https://api-usuario-tj78.onrender.com/api/sueno"
 
   useEffect(() => {
     const fetchSleep = async () => {
