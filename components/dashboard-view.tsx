@@ -12,11 +12,13 @@ import {
   Target,
 } from "lucide-react"
 
+const API_URL = "https://api-usuario-tj78.onrender.com"
+const FRONT_URL = "https://front-end-menu-app-cyan.vercel.app"
+
 export function Dashboard() {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   
-  // 🔹 Token y carga de datos segura
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const tokenFromUrl = params.get("token")
@@ -33,28 +35,34 @@ export function Dashboard() {
       console.warn("No hay token. Redirigiendo al login...")
       localStorage.removeItem("token")
       localStorage.removeItem("usuario")
-      window.location.href = "http://localhost:3000/login"
+      window.location.href = `${FRONT_URL}/login`
       return
     }
 
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/resumen", {
+        // 🔹 Llamar al endpoint correcto /api/resumen
+        const res = await fetch(`${API_URL}/api/resumen`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         })
-        if (!res.ok) throw new Error("Error al obtener datos del backend")
+        
+        if (!res.ok) {
+          throw new Error("Error al obtener datos del backend")
+        }
 
         const json = await res.json()
+        console.log("Datos recibidos del backend:", json)
         setData(json)
+        
       } catch (err) {
         console.error("Error al obtener datos:", err)
         alert("Error cargando datos. Inicia sesión nuevamente.")
         localStorage.removeItem("token")
         localStorage.removeItem("usuario")
-        window.location.href = "http://localhost:3000/login"
+        window.location.href = `${FRONT_URL}/login`
       } finally {
         setLoading(false)
       }
@@ -88,26 +96,14 @@ export function Dashboard() {
   )
   const last7Records = sortedRecords.slice(0, 7).reverse()
 
-  const avgHours =
-    last7Records.length > 0
-      ? last7Records.reduce((sum, r) => sum + (r.horas || 0), 0) / last7Records.length
-      : 0
-
-  const trend =
-    last7Records.length >= 2
-      ? Math.round(
-          (last7Records[last7Records.length - 1].horas -
-            last7Records[last7Records.length - 2].horas) * 10
-        ) / 10
-      : 0
-
-  const avgQuality =
-    last7Records.length > 0
-      ? Math.round(
-          last7Records.reduce((sum, r) => sum + (r.calidad || 0), 0) /
-            last7Records.length
-        )
-      : 0
+  // Usar datos del backend
+  const avgHours = data.promedio_sueno || 0
+  const lastNight = data.ultima_noche || 0
+  const avgQuality = data.calidad_promedio || 0
+  const trendText = data.tendencia_sueno || "+0.0h"
+  
+  // Extraer el número de la tendencia para el cálculo visual
+  const trend = parseFloat(trendText.replace('h', '')) || 0
 
   const weekData = last7Records.map((record: any) => {
     const date = new Date(record.fecha + "T12:00")
@@ -121,8 +117,8 @@ export function Dashboard() {
 
   const sleepData = {
     avgHours,
-    lastNight: last7Records[last7Records.length - 1]?.horas || avgHours,
-    trend: `${trend > 0 ? "+" : ""}${trend}h`,
+    lastNight,
+    trend: trendText,
     quality: avgQuality,
     weekData,
   }
