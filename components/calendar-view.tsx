@@ -59,7 +59,7 @@ export function Calendar() {
 async function fetchEventos(token: string) {
   try {
     setLoading(true)
-    const res = await fetch(`http://localhost:8080/eventos/usuario`, {
+    const res = await fetch(`https://api-usuario-tj78.onrender.com/eventos/usuario`, {
       headers: { Authorization: `Bearer ${token}` },
     })
 
@@ -122,7 +122,7 @@ async function fetchEventos(token: string) {
     }
 
     try {
-      const res = await fetch("http://localhost:8080/eventos/crear", {
+      const res = await fetch("https://api-usuario-tj78.onrender.com/eventos/crear", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -148,7 +148,7 @@ async function fetchEventos(token: string) {
     if (!confirmDelete) return
 
     try {
-      const res = await fetch(`http://localhost:8080/eventos/eliminar/${id}`, {
+      const res = await fetch(`https://api-usuario-tj78.onrender.com/eventos/eliminar/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       })

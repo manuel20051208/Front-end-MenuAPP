@@ -22,7 +22,7 @@ export function Tasks() {
     const fetchTasks = async () => {
       if (!token) return
       try {
-        const res = await fetch("http://localhost:8080/api/tarea", {
+        const res = await fetch("https://api-usuario-tj78.onrender.com/api/tarea", {
           headers: { Authorization: `Bearer ${token}` },
         })
         if (!res.ok) throw new Error("Error al obtener tareas")
@@ -39,7 +39,7 @@ export function Tasks() {
   const addTask = async () => {
     if (!newTask.trim() || !token) return
     try {
-      const res = await fetch("http://localhost:8080/api/tarea/agregar", {
+      const res = await fetch("https://api-usuario-tj78.onrender.com/api/tarea/agregar", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,7 +64,7 @@ export function Tasks() {
   const toggleTask = async (id: number) => {
     if (!token) return
     try {
-      const res = await fetch(`http://localhost:8080/api/tarea/completar/${id}`, {
+      const res = await fetch(`https://api-usuario-tj78.onrender.com/api/tarea/completar/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -87,7 +87,7 @@ export function Tasks() {
   const deleteTask = async (id: number) => {
     if (!token) return
     try {
-      const res = await fetch(`http://localhost:8080/api/tarea/eliminar/${id}`, {
+      const res = await fetch(`https://api-usuario-tj78.onrender.com/api/tarea/eliminar/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       })
