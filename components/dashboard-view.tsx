@@ -19,21 +19,10 @@ export function Dashboard() {
   
   // 🔹 Token y carga de datos segura
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const tokenFromUrl = params.get("token")
-
-    if (tokenFromUrl) {
-      console.log("Token recibido por URL:", tokenFromUrl)
-      localStorage.setItem("token", tokenFromUrl)
-      window.history.replaceState({}, "", window.location.pathname)
-    }
-
     const token = getAuthToken()
 
     if (!token) {
       console.warn("No hay token. Redirigiendo al login...")
-      localStorage.removeItem("token")
-      localStorage.removeItem("usuario")
       redirectToLogin()
       return
     }

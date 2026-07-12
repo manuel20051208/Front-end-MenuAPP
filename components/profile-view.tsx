@@ -21,23 +21,10 @@ export function Profile() {
     try {
       if (typeof window === "undefined") return
 
-      const params = new URLSearchParams(window.location.search)
-      const tokenFromUrl = params.get("token")
-
-      let token = tokenFromUrl
-
-      // Si token de URL viene, lo guardamos y limpiamos URL
-      if (tokenFromUrl) {
-        localStorage.setItem("token", tokenFromUrl)
-        token = tokenFromUrl
-        window.history.replaceState({}, document.title, "/")
-      } else {
-        token = getAuthToken()
-      }
+      const token = getAuthToken()
 
       // Validar token antes del fetch
       if (!token || token === "null") {
-        localStorage.removeItem("token")
         alert("Sesión no válida o expirada.")
         redirectToLogin()
         return

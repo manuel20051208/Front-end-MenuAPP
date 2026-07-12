@@ -9,20 +9,17 @@ export function isLocalDevelopment() {
 export function getAuthToken() {
   if (typeof window === "undefined") return null
 
-  const storedToken = window.localStorage.getItem(LOCAL_STORAGE_KEY)
-  if (storedToken && storedToken !== "null") return storedToken
-
-  if (isLocalDevelopment()) {
-    window.localStorage.setItem(LOCAL_STORAGE_KEY, LOCAL_DEV_TOKEN)
-    return LOCAL_DEV_TOKEN
-  }
+  // Leer la cookie "token"
+  const match = document.cookie.match(new RegExp('(^| )token=([^;]+)'))
+  if (match) return match[2]
 
   return null
 }
 
 export function clearAuthToken() {
   if (typeof window !== "undefined") {
-    window.localStorage.removeItem(LOCAL_STORAGE_KEY)
+    // Borrar la cookie configurando su expiración en el pasado
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;"
   }
 }
 
@@ -49,10 +46,5 @@ export function getAuthHeaders(extra: Record<string, string> = {}) {
 
 export function redirectToLogin() {
   if (typeof window === "undefined") return
-
-  if (isLocalDevelopment()) {
-    return
-  }
-
-  window.location.href = "https://front-end-loggin.vercel.app/"
+  window.location.href = "/login"
 }

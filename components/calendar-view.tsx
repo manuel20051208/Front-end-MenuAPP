@@ -33,13 +33,6 @@ export function Calendar() {
 
   // 🔹 Cargar token desde URL o localStorage
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const tokenFromUrl = params.get("token")
-    if (tokenFromUrl) {
-      localStorage.setItem("token", tokenFromUrl)
-      window.history.replaceState({}, "", window.location.pathname)
-    }
-
     const storedToken = getAuthToken()
     setToken(storedToken)
 
