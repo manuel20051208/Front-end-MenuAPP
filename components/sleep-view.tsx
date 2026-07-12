@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Card } from "@/components/ui/card"
+import { getAuthHeaders, getAuthToken, resolveApiUrl } from "@/lib/api"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -20,8 +21,8 @@ export function Sleep() {
   const [sleepRecords, setSleepRecords] = useState<SleepRecord[]>([])
   const [bedtime, setBedtime] = useState("")
   const [wakeup, setWakeup] = useState("")
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null
-  const API = "https://api-usuario-tj78.onrender.com/api/sueno"
+  const token = typeof window !== "undefined" ? getAuthToken() : null
+  const API = resolveApiUrl("/api/sueno")
 
   useEffect(() => {
     const fetchSleep = async () => {
@@ -35,7 +36,7 @@ export function Sleep() {
           return
         }
 
-        const res = await fetch(API, { headers: { Authorization: `Bearer ${token}` } })
+        const res = await fetch(API, { headers: getAuthHeaders() })
         if (!res.ok) throw new Error("Error al obtener registros de sueño")
         const data = await res.json()
         setSleepRecords(data)
@@ -97,7 +98,7 @@ export function Sleep() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          ...getAuthHeaders(),
         },
         body: JSON.stringify(newRecord),
       })

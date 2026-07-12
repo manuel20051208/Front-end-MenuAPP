@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Card } from "@/components/ui/card"
+import { getAuthHeaders, getAuthToken, redirectToLogin, resolveApiUrl } from "@/lib/api"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -22,28 +23,29 @@ export function Profile() {
 
       const params = new URLSearchParams(window.location.search)
       const tokenFromUrl = params.get("token")
-      const storedToken = localStorage.getItem("token")
 
-      let token = tokenFromUrl || storedToken
+      let token = tokenFromUrl
 
       // Si token de URL viene, lo guardamos y limpiamos URL
       if (tokenFromUrl) {
         localStorage.setItem("token", tokenFromUrl)
         token = tokenFromUrl
         window.history.replaceState({}, document.title, "/")
+      } else {
+        token = getAuthToken()
       }
 
       // Validar token antes del fetch
       if (!token || token === "null") {
         localStorage.removeItem("token")
         alert("Sesión no válida o expirada.")
-        window.location.href = "https://front-end-loggin.vercel.app/"
+        redirectToLogin()
         return
       }
 
       // Petición al backend
-      const res = await fetch("https://api-usuario-tj78.onrender.com/api/usuario/me", {
-        headers: { Authorization: `Bearer ${token}` },
+      const res = await fetch(resolveApiUrl("/api/usuario/me"), {
+        headers: getAuthHeaders(),
       })
 
       if (!res.ok) throw new Error("Token inválido o expirado")
@@ -61,7 +63,7 @@ export function Profile() {
       console.error("Error en autenticación:", err)
       alert("Sesión no válida o expirada.")
       localStorage.removeItem("token")
-      window.location.href = "https://front-end-loggin.vercel.app/"
+      redirectToLogin()
     }
   }
 
@@ -74,11 +76,11 @@ export function Profile() {
       const token = localStorage.getItem("token")
       if (!token) return alert("Sesión expirada.")
 
-      const res = await fetch("https://api-usuario-tj78.onrender.com/api/usuario/actualizarDatos", {
+      const res = await fetch(resolveApiUrl("/api/usuario/actualizarDatos"), {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          ...getAuthHeaders(),
         },
         body: JSON.stringify({
           id: userData.id,
@@ -107,8 +109,9 @@ export function Profile() {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`https://api-usuario-tj78.onrender.com/api/usuario/eliminar/${userData.email}`, {
+      const response = await fetch(resolveApiUrl(`/api/usuario/eliminar/${userData.email}`), {
         method: "DELETE",
+        headers: getAuthHeaders(),
       })
 
       if (response.ok) {
@@ -130,7 +133,7 @@ export function Profile() {
   const handleLogout = () => {
     localStorage.removeItem("token")
     alert("Sesión cerrada correctamente")
-    window.location.href = "https://front-end-loggin.vercel.app/"
+    redirectToLogin()
   }
 
   if (!userData || !userData.nombre) {

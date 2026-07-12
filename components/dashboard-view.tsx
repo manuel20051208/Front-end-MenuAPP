@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Card } from "@/components/ui/card"
+import { getAuthHeaders, getAuthToken, redirectToLogin, resolveApiUrl } from "@/lib/api"
 import {
   LayoutDashboard,
   CheckCircle2,
@@ -27,22 +28,22 @@ export function Dashboard() {
       window.history.replaceState({}, "", window.location.pathname)
     }
 
-    const token = localStorage.getItem("token")
+    const token = getAuthToken()
 
     if (!token) {
       console.warn("No hay token. Redirigiendo al login...")
       localStorage.removeItem("token")
       localStorage.removeItem("usuario")
-      window.location.href = "https://front-end-loggin.vercel.app/"
+      redirectToLogin()
       return
     }
 
     const fetchData = async () => {
       try {
-        const res = await fetch("https://api-usuario-tj78.onrender.com/api/resumen", {
+        const res = await fetch(resolveApiUrl("/api/resumen"), {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            ...getAuthHeaders(),
           },
         })
         if (!res.ok) throw new Error("Error al obtener datos del backend")
@@ -54,7 +55,7 @@ export function Dashboard() {
         alert("Error cargando datos. Inicia sesión nuevamente.")
         localStorage.removeItem("token")
         localStorage.removeItem("usuario")
-        window.location.href = "https://front-end-loggin.vercel.app/"
+        redirectToLogin()
       } finally {
         setLoading(false)
       }

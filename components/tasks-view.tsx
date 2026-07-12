@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Card } from "@/components/ui/card"
+import { getAuthHeaders, getAuthToken, resolveApiUrl } from "@/lib/api"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Plus, Trash2, CheckCircle2, Circle } from "lucide-react"
@@ -15,15 +16,15 @@ interface Task {
 export function Tasks() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [newTask, setNewTask] = useState("")
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null
+  const token = typeof window !== "undefined" ? getAuthToken() : null
 
   // --- Cargar tareas desde el backend al iniciar ---
   useEffect(() => {
     const fetchTasks = async () => {
       if (!token) return
       try {
-        const res = await fetch("https://api-usuario-tj78.onrender.com/api/tarea", {
-          headers: { Authorization: `Bearer ${token}` },
+        const res = await fetch(resolveApiUrl("/api/tarea"), {
+          headers: getAuthHeaders(),
         })
         if (!res.ok) throw new Error("Error al obtener tareas")
         const data = await res.json()
@@ -39,11 +40,11 @@ export function Tasks() {
   const addTask = async () => {
     if (!newTask.trim() || !token) return
     try {
-      const res = await fetch("https://api-usuario-tj78.onrender.com/api/tarea/agregar", {
+      const res = await fetch(resolveApiUrl("/api/tarea/agregar"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          ...getAuthHeaders(),
         },
         body: JSON.stringify({ descripcion: newTask }),
       })
@@ -64,11 +65,11 @@ export function Tasks() {
   const toggleTask = async (id: number) => {
     if (!token) return
     try {
-      const res = await fetch(`https://api-usuario-tj78.onrender.com/api/tarea/completar/${id}`, {
+      const res = await fetch(resolveApiUrl(`/api/tarea/completar/${id}`), {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          ...getAuthHeaders(),
         },
       })
       if (!res.ok) {
@@ -87,9 +88,9 @@ export function Tasks() {
   const deleteTask = async (id: number) => {
     if (!token) return
     try {
-      const res = await fetch(`https://api-usuario-tj78.onrender.com/api/tarea/eliminar/${id}`, {
+      const res = await fetch(resolveApiUrl(`/api/tarea/eliminar/${id}`), {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: getAuthHeaders(),
       })
       if (!res.ok) {
         const txt = await res.text()

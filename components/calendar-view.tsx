@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Card } from "@/components/ui/card"
+import { getAuthHeaders, getAuthToken, redirectToLogin, resolveApiUrl } from "@/lib/api"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -39,14 +40,14 @@ export function Calendar() {
       window.history.replaceState({}, "", window.location.pathname)
     }
 
-    const storedToken = localStorage.getItem("token")
+    const storedToken = getAuthToken()
     setToken(storedToken)
 
     if (storedToken) {
       fetchEventos(storedToken)
     } else {
       alert("⚠️ Debes iniciar sesión nuevamente.")
-      window.location.href = "http://localhost:3000/login"
+      redirectToLogin()
     }
   }, [])
 
@@ -59,8 +60,8 @@ export function Calendar() {
 async function fetchEventos(token: string) {
   try {
     setLoading(true)
-    const res = await fetch(`https://api-usuario-tj78.onrender.com/eventos/usuario`, {
-      headers: { Authorization: `Bearer ${token}` },
+    const res = await fetch(resolveApiUrl("/api/eventos/usuario"), {
+      headers: getAuthHeaders(),
     })
 
     if (res.status === 204) {
@@ -122,11 +123,11 @@ async function fetchEventos(token: string) {
     }
 
     try {
-      const res = await fetch("https://api-usuario-tj78.onrender.com/eventos/crear", {
+      const res = await fetch(resolveApiUrl("/api/eventos/crear"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          ...getAuthHeaders(),
         },
         body: JSON.stringify(payload),
       })
@@ -148,9 +149,9 @@ async function fetchEventos(token: string) {
     if (!confirmDelete) return
 
     try {
-      const res = await fetch(`https://api-usuario-tj78.onrender.com/eventos/eliminar/${id}`, {
+      const res = await fetch(resolveApiUrl(`/api/eventos/eliminar/${id}`), {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: getAuthHeaders(),
       })
       if (!res.ok) throw new Error("Error al eliminar evento")
 
