@@ -60,10 +60,10 @@ export default function Home() {
 
   return (
     <div className="app-bg flex h-screen overflow-hidden">
-      {/* Sidebar */}
+      {/* Sidebar - solo escritorio */}
       <aside
         className={cn(
-          "relative flex flex-col border-r border-border bg-sidebar/80 backdrop-blur-xl transition-all duration-300",
+          "relative hidden flex-col border-r border-border bg-sidebar/80 backdrop-blur-xl transition-all duration-300 md:flex",
           menuOpen ? "w-64" : "w-0 overflow-hidden",
         )}
       >
@@ -130,20 +130,74 @@ export default function Home() {
         <Button
           onClick={() => setMenuOpen(true)}
           size="icon"
-          className="absolute left-4 top-6 z-50 h-10 w-10 rounded-full border border-border bg-card p-0 text-foreground shadow-lg hover:bg-muted"
+          className="absolute left-4 top-6 z-50 hidden h-10 w-10 rounded-full border border-border bg-card p-0 text-foreground shadow-lg hover:bg-muted md:flex"
         >
           <ChevronRight className="h-5 w-5" />
         </Button>
       )}
 
-      {/* Main content */}
-      <main className="flex-1 overflow-auto p-6 md:p-8">
-        {currentView === "dashboard" && <Dashboard />}
-        {currentView === "calendar" && <Calendar />}
-        {currentView === "sleep" && <Sleep />}
-        {currentView === "tasks" && <Tasks />}
-        {currentView === "profile" && <Profile />}
-      </main>
+      {/* Columna principal */}
+      <div className="flex flex-1 flex-col overflow-hidden">
+        {/* Encabezado móvil */}
+        <header className="flex items-center justify-between border-b border-border bg-sidebar/80 px-4 py-3 backdrop-blur-xl md:hidden">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-lg shadow-primary/30">
+              <LayoutDashboard className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-sm font-bold leading-none text-sidebar-foreground">MenuApp</p>
+              <p className="mt-1 text-[10px] font-medium tracking-wide text-muted-foreground">
+                {NAV_ITEMS.find((i) => i.id === currentView)?.label}
+              </p>
+            </div>
+          </div>
+          <ThemeToggle compact />
+        </header>
+
+        {/* Contenido */}
+        <main className="flex-1 overflow-auto p-4 pb-24 md:p-8 md:pb-8">
+          {currentView === "dashboard" && <Dashboard />}
+          {currentView === "calendar" && <Calendar />}
+          {currentView === "sleep" && <Sleep />}
+          {currentView === "tasks" && <Tasks />}
+          {currentView === "profile" && <Profile />}
+        </main>
+      </div>
+
+      {/* Navegación inferior - solo móvil */}
+      <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t border-border bg-sidebar/95 px-2 pb-[env(safe-area-inset-bottom)] pt-2 backdrop-blur-xl md:hidden">
+        {NAV_ITEMS.map(({ id, label, icon: Icon, gradient }) => {
+          const active = currentView === id
+          return (
+            <button
+              key={id}
+              onClick={() => setCurrentView(id)}
+              aria-label={label}
+              aria-current={active ? "page" : undefined}
+              className="flex flex-1 flex-col items-center gap-1 py-1"
+            >
+              <span
+                className={cn(
+                  "flex h-10 w-10 items-center justify-center rounded-xl transition-all",
+                  active
+                    ? "bg-gradient-to-br text-white shadow-md " + gradient
+                    : "text-muted-foreground",
+                )}
+              >
+                <Icon className="h-5 w-5" />
+              </span>
+              <span
+                className={cn(
+                  "text-[10px] font-semibold transition-colors",
+                  active ? "text-foreground" : "text-muted-foreground",
+                )}
+              >
+                {label}
+              </span>
+            </button>
+          )
+        })}
+      </nav>
     </div>
   )
 }

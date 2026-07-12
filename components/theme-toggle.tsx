@@ -5,13 +5,30 @@ import { useTheme } from "next-themes"
 import { Moon, Sun } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-export function ThemeToggle({ className }: { className?: string }) {
+export function ThemeToggle({ className, compact = false }: { className?: string; compact?: boolean }) {
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => setMounted(true), [])
 
   const isDark = theme === "dark"
+  const icon = mounted && isDark ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />
+
+  if (compact) {
+    return (
+      <button
+        type="button"
+        aria-label={isDark ? "Activar modo claro" : "Activar modo oscuro"}
+        onClick={() => setTheme(isDark ? "light" : "dark")}
+        className={cn(
+          "flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-sm transition-transform hover:scale-105",
+          className,
+        )}
+      >
+        {icon}
+      </button>
+    )
+  }
 
   return (
     <button
@@ -24,7 +41,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       )}
     >
       <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-sm">
-        {mounted && isDark ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+        {icon}
       </span>
       <span>{mounted ? (isDark ? "Modo oscuro" : "Modo claro") : "Tema"}</span>
     </button>
