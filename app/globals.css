@@ -4,108 +4,142 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    /* ☀️ Light mode — luminoso pero con acentos llamativos (mismo tono azul/índigo/cian) */
+    --background: 214 100% 98%;
+    --foreground: 224 47% 14%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 224 47% 14%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    /* Colores ultra vibrantes y saturados */
-    --chart-1: 280 100% 70%;
-    --chart-2: 200 100% 60%;
-    --chart-3: 160 100% 55%;
-    --chart-4: 45 100% 65%;
-    --chart-5: 340 100% 70%;
-    --radius: 0.5rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --popover-foreground: 224 47% 14%;
+    --primary: 245 78% 56%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 214 60% 94%;
+    --secondary-foreground: 224 40% 20%;
+    --muted: 214 45% 95%;
+    --muted-foreground: 224 20% 42%;
+    --accent: 199 92% 48%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 58%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 88%;
+    --input: 214 32% 88%;
+    --ring: 245 78% 56%;
+    /* Colores vibrantes para gráficos */
+    --chart-1: 245 78% 60%;
+    --chart-2: 199 92% 50%;
+    --chart-3: 160 84% 42%;
+    --chart-4: 38 95% 55%;
+    --chart-5: 320 85% 60%;
+    --radius: 0.85rem;
+    /* Fondo de la app (gradiente) */
+    --app-from: 214 100% 97%;
+    --app-via: 245 100% 97%;
+    --app-to: 199 100% 97%;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 224 40% 24%;
+    --sidebar-primary: 245 78% 56%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 214 60% 95%;
+    --sidebar-accent-foreground: 224 40% 20%;
+    --sidebar-border: 214 32% 90%;
+    --sidebar-ring: 245 78% 56%;
   }
 
   .dark {
-    /* Fondo más oscuro para mejor contraste */
-    --background: 220 25% 8%;
-    --foreground: 0 0% 98%;
-    --card: 220 20% 12%;
-    --card-foreground: 0 0% 98%;
-    --popover: 220 20% 12%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 220 15% 18%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 220 15% 18%;
-    --muted-foreground: 0 0% 70%;
-    --accent: 220 15% 18%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 80% 55%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 220 15% 20%;
-    --input: 220 15% 20%;
-    --ring: 0 0% 83.1%;
-    /* Colores ultra vibrantes para modo oscuro */
-    --chart-1: 280 100% 75%;
-    --chart-2: 200 100% 65%;
-    --chart-3: 160 100% 60%;
-    --chart-4: 45 100% 70%;
-    --chart-5: 340 100% 75%;
-    --sidebar-background: 220 25% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    /* 🌙 Dark mode — navy profundo con acentos vibrantes */
+    --background: 224 47% 8%;
+    --foreground: 210 40% 98%;
+    --card: 224 40% 13%;
+    --card-foreground: 210 40% 98%;
+    --popover: 224 40% 13%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 245 85% 68%;
+    --primary-foreground: 224 47% 10%;
+    --secondary: 224 30% 18%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 224 30% 18%;
+    --muted-foreground: 214 20% 72%;
+    --accent: 199 90% 58%;
+    --accent-foreground: 224 47% 10%;
+    --destructive: 0 80% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 224 28% 22%;
+    --input: 224 28% 22%;
+    --ring: 245 85% 68%;
+    --chart-1: 245 90% 72%;
+    --chart-2: 199 95% 62%;
+    --chart-3: 160 90% 55%;
+    --chart-4: 38 95% 62%;
+    --chart-5: 320 90% 68%;
+    --app-from: 224 47% 9%;
+    --app-via: 245 40% 11%;
+    --app-to: 224 50% 6%;
+
+    --sidebar-background: 224 44% 11%;
+    --sidebar-foreground: 210 30% 92%;
+    --sidebar-primary: 245 85% 68%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 20% 16%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 220 20% 18%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 224 30% 17%;
+    --sidebar-accent-foreground: 210 30% 92%;
+    --sidebar-border: 224 28% 20%;
+    --sidebar-ring: 245 85% 68%;
   }
 }
 
 @layer base {
+  * {
+    @apply border-border;
+  }
   body {
     @apply bg-background text-foreground;
   }
 }
 
-/* Animaciones más suaves y visibles */
+@layer components {
+  /* Fondo principal de la aplicación */
+  .app-bg {
+    background-image: linear-gradient(
+      135deg,
+      hsl(var(--app-from)),
+      hsl(var(--app-via)),
+      hsl(var(--app-to))
+    );
+  }
+
+  /* Tarjeta tipo "glass" que funciona en ambos modos */
+  .glass-card {
+    @apply border border-border bg-card/80 backdrop-blur-xl shadow-lg shadow-primary/5;
+  }
+
+  /* Panel interior sutil */
+  .glass-inner {
+    @apply bg-muted/60 border border-border/60;
+  }
+}
+
+/* Animaciones suaves */
 @keyframes blob {
   0% {
     transform: translate(0px, 0px) scale(1);
-    opacity: 0.8;
+    opacity: 0.7;
   }
   33% {
-    transform: translate(30px, -50px) scale(1.2);
-    opacity: 1;
+    transform: translate(30px, -50px) scale(1.15);
+    opacity: 0.9;
   }
   66% {
     transform: translate(-20px, 20px) scale(0.9);
-    opacity: 0.8;
+    opacity: 0.7;
   }
   100% {
     transform: translate(0px, 0px) scale(1);
-    opacity: 0.8;
+    opacity: 0.7;
   }
 }
 
 .animate-blob {
-  animation: blob 7s infinite;
+  animation: blob 8s infinite;
 }
 
 .animation-delay-2000 {

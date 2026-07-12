@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { ChevronLeft, ChevronRight, Plus, CalendarIcon, Trash2 } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 const DAYS = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"]
 const MONTHS = [
@@ -160,8 +161,10 @@ async function fetchEventos(token: string) {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-4xl font-bold text-white flex items-center gap-3">
-          <CalendarIcon className="h-12 w-12 text-purple-400" />
+        <h1 className="flex items-center gap-3 text-3xl font-bold text-foreground md:text-4xl">
+          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30">
+            <CalendarIcon className="h-6 w-6" />
+          </span>
           Calendario
         </h1>
         <Button
@@ -173,7 +176,7 @@ async function fetchEventos(token: string) {
               openModalForDay(1)
             }
           }}
-          className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+          className="bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-90"
         >
           <Plus className="mr-2 h-4 w-4" />
           Nuevo Evento
@@ -181,23 +184,23 @@ async function fetchEventos(token: string) {
       </div>
 
       {/* Calendario */}
-      <Card className="bg-white/10 backdrop-blur-md border-white/20 p-6">
-        <div className="flex items-center justify-between mb-6">
-          <Button onClick={previousMonth} variant="ghost" size="icon" className="text-white hover:bg-white/10">
+      <Card className="glass-card p-6">
+        <div className="mb-6 flex items-center justify-between">
+          <Button onClick={previousMonth} variant="ghost" size="icon" className="text-foreground hover:bg-muted">
             <ChevronLeft className="h-6 w-6" />
           </Button>
-          <h2 className="text-2xl font-bold text-white">{MONTHS[month]} {year}</h2>
-          <Button onClick={nextMonth} variant="ghost" size="icon" className="text-white hover:bg-white/10">
+          <h2 className="text-2xl font-bold text-foreground">{MONTHS[month]} {year}</h2>
+          <Button onClick={nextMonth} variant="ghost" size="icon" className="text-foreground hover:bg-muted">
             <ChevronRight className="h-6 w-6" />
           </Button>
         </div>
 
         {loading ? (
-          <div className="text-white">Cargando eventos...</div>
+          <div className="text-muted-foreground">Cargando eventos...</div>
         ) : (
           <div className="grid grid-cols-7 gap-2">
             {DAYS.map((d) => (
-              <div key={d} className="text-center text-sm font-bold text-purple-300 py-2">{d}</div>
+              <div key={d} className="py-2 text-center text-sm font-bold text-primary">{d}</div>
             ))}
             {Array.from({ length: firstDay }).map((_, i) => (
               <div key={`empty-${i}`} className="aspect-square" />
@@ -213,18 +216,18 @@ async function fetchEventos(token: string) {
                   key={day}
                   onClick={() => openModalForDay(day)}
                   className={cn(
-                    "aspect-square p-2 cursor-pointer transition-all hover:scale-105",
+                    "aspect-square cursor-pointer p-2 transition-all hover:scale-105",
                     isToday
-                      ? "bg-gradient-to-br from-purple-600 to-blue-600 border-purple-400/40 shadow-lg shadow-purple-500/30"
-                      : "bg-white/5 border-white/10 hover:bg-white/10",
+                      ? "border-transparent bg-gradient-to-br from-primary to-accent text-white shadow-lg shadow-primary/30"
+                      : "glass-inner hover:bg-muted",
                   )}
                 >
-                  <div className="flex flex-col h-full">
-                    <span className="text-white font-semibold text-sm">{day}</span>
+                  <div className="flex h-full flex-col">
+                    <span className={cn("text-sm font-semibold", isToday ? "text-white" : "text-foreground")}>{day}</span>
                     {dayEvents.length > 0 && (
-                      <div className="mt-1 flex-1 flex flex-col gap-1 overflow-hidden">
+                      <div className="mt-1 flex flex-1 flex-col gap-1 overflow-hidden">
                         {dayEvents.map((ev) => (
-                          <div key={ev.id} className="text-[10px] bg-blue-600 rounded px-1 py-0.5 text-white truncate font-medium">
+                          <div key={ev.id} className="truncate rounded bg-primary px-1 py-0.5 text-[10px] font-medium text-primary-foreground">
                             {ev.evento}
                           </div>
                         ))}
@@ -239,14 +242,14 @@ async function fetchEventos(token: string) {
       </Card>
 
       {/* Lista de próximos eventos */}
-      <Card className="bg-white/10 backdrop-blur-md border-white/20 p-6">
-        <h3 className="text-xl font-bold text-white mb-4">Próximos Eventos</h3>
+      <Card className="glass-card p-6">
+        <h3 className="mb-4 text-xl font-bold text-foreground">Próximos Eventos</h3>
         <div className="space-y-3">
           {Object.entries(events)
             .sort()
             .map(([date, list]) => (
               <div key={date} className="flex flex-col gap-3">
-                <p className="text-white font-semibold">
+                <p className="font-semibold text-foreground">
                   {new Date(date).toLocaleDateString("es-ES", {
                     day: "numeric",
                     month: "long",
@@ -256,16 +259,16 @@ async function fetchEventos(token: string) {
                 {list.map((e) => (
                   <div
                     key={e.id}
-                    className="flex items-center justify-between p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all"
+                    className="glass-inner flex items-center justify-between rounded-lg p-3 transition-all hover:bg-muted"
                   >
                     <div>
-                      <p className="text-purple-300 text-sm font-medium">{e.evento}</p>
-                      <p className="text-slate-400 text-xs">{e.descripcion}</p>
+                      <p className="text-sm font-medium text-primary">{e.evento}</p>
+                      <p className="text-xs text-muted-foreground">{e.descripcion}</p>
                     </div>
 
                     <button
                       onClick={() => handleDeleteEvent(e.id)}
-                      className="text-red-400 hover:text-red-500 transition-colors flex items-center gap-1 font-medium"
+                      className="flex items-center gap-1 font-medium text-destructive transition-colors hover:opacity-80"
                     >
                       <Trash2 className="h-4 w-4" /> Eliminar
                     </button>
@@ -278,35 +281,35 @@ async function fetchEventos(token: string) {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/60" onClick={() => setIsModalOpen(false)} />
-          <div className="relative bg-gray-900 rounded-2xl p-6 w-full max-w-md z-10 shadow-xl border border-purple-600/40">
-            <h3 className="text-lg text-white font-bold mb-4">Nuevo evento</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-foreground/40 backdrop-blur-sm" onClick={() => setIsModalOpen(false)} />
+          <div className="relative z-10 w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-2xl">
+            <h3 className="mb-4 text-lg font-bold text-foreground">Nuevo evento</h3>
 
             <Input
               type="date"
               value={form.fecha}
               onChange={(e: any) => setForm({ ...form, fecha: e.target.value })}
-              className="mb-3 text-white bg-white/10 border-white/20"
+              className="mb-3 border-border bg-muted/60 text-foreground"
             />
             <Input
               placeholder="Nombre del evento"
               value={form.evento}
               onChange={(e: any) => setForm({ ...form, evento: e.target.value })}
-              className="mb-3 text-white bg-white/10 border-white/20"
+              className="mb-3 border-border bg-muted/60 text-foreground"
             />
             <Textarea
               placeholder="Descripción"
               value={form.descripcion}
               onChange={(e: any) => setForm({ ...form, descripcion: e.target.value })}
-              className="text-white bg-white/10 border-white/20"
+              className="border-border bg-muted/60 text-foreground"
             />
 
             <div className="mt-4 flex gap-3">
-              <Button onClick={() => setIsModalOpen(false)} variant="ghost" className="flex-1 text-white hover:bg-white/10">
+              <Button onClick={() => setIsModalOpen(false)} variant="ghost" className="flex-1 text-foreground hover:bg-muted">
                 Cancelar
               </Button>
-              <Button onClick={handleCreateEvent} className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
+              <Button onClick={handleCreateEvent} className="flex-1 bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-90">
                 Guardar
               </Button>
             </div>
@@ -315,8 +318,4 @@ async function fetchEventos(token: string) {
       )}
     </div>
   )
-}
-
-function cn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(" ")
 }
