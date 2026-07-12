@@ -112,40 +112,42 @@ export function Tasks() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-4xl font-bold text-white flex items-center gap-3">
-          <CheckCircle2 className="h-12 w-12 text-green-400" />
+        <h1 className="flex items-center gap-3 text-3xl font-bold text-foreground md:text-4xl">
+          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-500 text-white shadow-lg shadow-cyan-500/30">
+            <CheckCircle2 className="h-6 w-6" />
+          </span>
           Tareas del Día
         </h1>
       </div>
 
       {/* Progress Card */}
-      <Card className="bg-gradient-to-r from-purple-600 to-blue-600 border-purple-400/30 p-6 shadow-lg shadow-purple-500/30">
-        <div className="flex items-center justify-between mb-3">
+      <Card className="border-transparent bg-gradient-to-r from-primary to-accent p-6 shadow-lg shadow-primary/20">
+        <div className="mb-3 flex items-center justify-between">
           <h3 className="text-lg font-semibold text-white">Progreso del Día</h3>
           <span className="text-2xl font-bold text-white">
             {completedCount}/{totalCount}
           </span>
         </div>
-        <div className="w-full bg-white/20 rounded-full h-3 overflow-hidden">
+        <div className="h-3 w-full overflow-hidden rounded-full bg-white/25">
           <div
-            className="bg-gradient-to-r from-green-400 to-emerald-400 h-full transition-all duration-500 rounded-full shadow-lg"
+            className="h-full rounded-full bg-gradient-to-r from-emerald-300 to-emerald-100 shadow-lg transition-all duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <p className="text-sm text-white/90 mt-2 font-medium">{Math.round(progress)}% completado</p>
+        <p className="mt-2 text-sm font-medium text-white/90">{Math.round(progress)}% completado</p>
       </Card>
 
       {/* Add New Task */}
-      <Card className="bg-white/10 backdrop-blur-md border-white/20 p-6">
+      <Card className="glass-card p-6">
         <div className="flex gap-3">
           <Input
             value={newTask}
             onChange={(e) => setNewTask(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && addTask()}
+            onKeyDown={(e) => e.key === "Enter" && !e.nativeEvent.isComposing && addTask()}
             placeholder="Agregar nueva tarea..."
-            className="flex-1 bg-white/5 border-white/20 text-white placeholder:text-white/40"
+            className="flex-1 border-border bg-muted/60 text-foreground placeholder:text-muted-foreground"
           />
-          <Button onClick={addTask} className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
+          <Button onClick={addTask} className="bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-90">
             <Plus className="h-5 w-5" />
           </Button>
         </div>
@@ -154,13 +156,13 @@ export function Tasks() {
       {/* Tasks List */}
       <div className="space-y-3">
         {tasks.filter((t) => !t.completada).map((task) => (
-          <Card key={task.id} className="bg-white/10 backdrop-blur-md border-white/20 p-4 hover:bg-white/15 transition-all">
+          <Card key={task.id} className="glass-card p-4 transition-all hover:bg-muted/40">
             <div className="flex items-center gap-4">
-              <button onClick={() => toggleTask(task.id)} className="flex-shrink-0 text-white/60 hover:text-white transition-colors">
+              <button onClick={() => toggleTask(task.id)} className="flex-shrink-0 text-muted-foreground transition-colors hover:text-primary">
                 <Circle className="h-6 w-6" />
               </button>
-              <span className="flex-1 text-white font-medium">{task.descripcion}</span>
-              <Button onClick={() => deleteTask(task.id)} variant="ghost" size="icon" className="text-red-400 hover:text-red-300 hover:bg-red-500/10">
+              <span className="flex-1 font-medium text-foreground">{task.descripcion}</span>
+              <Button onClick={() => deleteTask(task.id)} variant="ghost" size="icon" className="text-destructive hover:bg-destructive/10 hover:text-destructive">
                 <Trash2 className="h-5 w-5" />
               </Button>
             </div>
@@ -169,15 +171,15 @@ export function Tasks() {
 
         {tasks.filter((t) => t.completada).length > 0 && (
           <>
-            <h3 className="text-lg font-semibold text-white/60 mt-6 mb-3">Completadas</h3>
+            <h3 className="mb-3 mt-6 text-lg font-semibold text-muted-foreground">Completadas</h3>
             {tasks.filter((t) => t.completada).map((task) => (
-              <Card key={task.id} className="bg-white/5 backdrop-blur-md border-white/10 p-4 opacity-60">
+              <Card key={task.id} className="glass-card p-4 opacity-70">
                 <div className="flex items-center gap-4">
-                  <button onClick={() => toggleTask(task.id)} className="flex-shrink-0 text-green-400">
+                  <button onClick={() => toggleTask(task.id)} className="flex-shrink-0 text-emerald-500">
                     <CheckCircle2 className="h-6 w-6" />
                   </button>
-                  <span className="flex-1 text-white/60 font-medium line-through">{task.descripcion}</span>
-                  <Button onClick={() => deleteTask(task.id)} variant="ghost" size="icon" className="text-red-400 hover:text-red-300 hover:bg-red-500/10">
+                  <span className="flex-1 font-medium text-muted-foreground line-through">{task.descripcion}</span>
+                  <Button onClick={() => deleteTask(task.id)} variant="ghost" size="icon" className="text-destructive hover:bg-destructive/10 hover:text-destructive">
                     <Trash2 className="h-5 w-5" />
                   </Button>
                 </div>

@@ -143,18 +143,20 @@ export function Sleep() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-4xl font-bold text-white flex items-center gap-3">
-          <Moon className="h-12 w-12 text-purple-400" />
+        <h1 className="flex items-center gap-3 text-3xl font-bold text-foreground md:text-4xl">
+          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-500 text-white shadow-lg shadow-violet-500/30">
+            <Moon className="h-6 w-6" />
+          </span>
           Registro de Sueño
         </h1>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-gradient-to-br from-purple-600 to-purple-700 border-purple-400/30 p-6 shadow-lg shadow-purple-500/30">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <Card className="border-transparent bg-gradient-to-br from-violet-600 to-indigo-600 p-6 shadow-lg shadow-violet-500/20">
           <div className="flex items-center gap-3">
             <Clock className="h-8 w-8 text-white" />
             <div>
-              <p className="text-sm text-purple-100 font-medium">Promedio de Sueño</p>
+              <p className="text-sm font-medium text-white/90">Promedio de Sueño</p>
               <p className="text-3xl font-bold text-white">
                 {avgFormatted.hours}h {avgFormatted.minutes}m
               </p>
@@ -162,21 +164,21 @@ export function Sleep() {
           </div>
         </Card>
 
-        <Card className="bg-gradient-to-br from-blue-600 to-blue-700 border-blue-400/30 p-6 shadow-lg shadow-blue-500/30">
+        <Card className="border-transparent bg-gradient-to-br from-blue-600 to-sky-600 p-6 shadow-lg shadow-blue-500/20">
           <div className="flex items-center gap-3">
             <TrendingUp className="h-8 w-8 text-white" />
             <div>
-              <p className="text-sm text-blue-100 font-medium">Tendencia</p>
+              <p className="text-sm font-medium text-white/90">Tendencia</p>
               <p className="text-3xl font-bold text-white">{trendLabel}</p>
             </div>
           </div>
         </Card>
 
-        <Card className="bg-gradient-to-br from-cyan-600 to-teal-600 border-cyan-400/30 p-6 shadow-lg shadow-cyan-500/30">
+        <Card className="border-transparent bg-gradient-to-br from-cyan-600 to-teal-600 p-6 shadow-lg shadow-cyan-500/20">
           <div className="flex items-center gap-3">
             <Sun className="h-8 w-8 text-white" />
             <div>
-              <p className="text-sm text-cyan-100 font-medium">Calidad Promedio</p>
+              <p className="text-sm font-medium text-white/90">Calidad Promedio</p>
               <p className="text-3xl font-bold text-white">{avgQuality}/5</p>
             </div>
           </div>
@@ -184,33 +186,33 @@ export function Sleep() {
       </div>
 
       {/* Registro nuevo */}
-      <Card className="bg-white/10 backdrop-blur-md border-white/20 p-6">
-        <h3 className="text-xl font-bold text-white mb-4">Registrar Sueño de Hoy</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <Card className="glass-card p-6">
+        <h3 className="mb-4 text-xl font-bold text-foreground">Registrar Sueño de Hoy</h3>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <div>
-            <Label htmlFor="bedtime" className="text-white mb-2 block">Hora de Dormir</Label>
+            <Label htmlFor="bedtime" className="mb-2 block text-foreground">Hora de Dormir</Label>
             <Input
               id="bedtime"
               type="time"
               value={bedtime}
               onChange={(e) => setBedtime(e.target.value)}
-              className="bg-white/5 border-white/20 text-white"
+              className="border-border bg-muted/60 text-foreground"
             />
           </div>
           <div>
-            <Label htmlFor="wakeup" className="text-white mb-2 block">Hora de Despertar</Label>
+            <Label htmlFor="wakeup" className="mb-2 block text-foreground">Hora de Despertar</Label>
             <Input
               id="wakeup"
               type="time"
               value={wakeup}
               onChange={(e) => setWakeup(e.target.value)}
-              className="bg-white/5 border-white/20 text-white"
+              className="border-border bg-muted/60 text-foreground"
             />
           </div>
           <div className="flex items-end">
             <Button
               onClick={addRecord}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg shadow-purple-500/50 hover:shadow-purple-500/70 transition-all"
+              className="w-full bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-lg shadow-primary/30 transition-all hover:opacity-90"
             >
               Guardar Registro
             </Button>
@@ -219,8 +221,8 @@ export function Sleep() {
       </Card>
 
       {/* Historial */}
-      <Card className="bg-white/10 backdrop-blur-md border-white/20 p-6">
-        <h3 className="text-xl font-bold text-white mb-4">Historial de Sueño</h3>
+      <Card className="glass-card p-6">
+        <h3 className="mb-4 text-xl font-bold text-foreground">Historial de Sueño</h3>
         <div className="space-y-3">
           {sleepRecords.map((record, idx) => {
             const formatted = formatHoursMinutes(record.horasDormidas)
@@ -230,23 +232,23 @@ export function Sleep() {
               month: "long",
             })
             return (
-              <div key={idx} className="flex items-center justify-between p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
+              <div key={idx} className="glass-inner flex items-center justify-between rounded-lg p-4 transition-colors hover:bg-muted">
                 <div className="flex items-center gap-4">
-                  <Moon className="h-6 w-6 text-purple-400" />
+                  <Moon className="h-6 w-6 text-primary" />
                   <div>
-                    <p className="text-white font-semibold">{displayDate}</p>
-                    <p className="text-sm text-purple-300">
+                    <p className="font-semibold text-foreground">{displayDate}</p>
+                    <p className="text-sm text-primary">
                       {record.horaDormir} - {record.horaDespertar}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-2xl font-bold text-white">
+                  <p className="text-2xl font-bold text-foreground">
                     {formatted.hours}h {formatted.minutes}m
                   </p>
-                  <div className="flex gap-1 mt-1">
+                  <div className="mt-1 flex gap-1">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <div key={i} className={`w-2 h-2 rounded-full ${i < record.calidad ? "bg-yellow-400" : "bg-white/20"}`} />
+                      <div key={i} className={`h-2 w-2 rounded-full ${i < record.calidad ? "bg-amber-400" : "bg-muted-foreground/30"}`} />
                     ))}
                   </div>
                 </div>

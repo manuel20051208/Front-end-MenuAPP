@@ -124,21 +124,23 @@ export function Profile() {
   }
 
   if (!userData || !userData.nombre) {
-    return <p className="text-center text-white mt-10">Cargando perfil...</p>
+    return <p className="mt-10 text-center text-muted-foreground">Cargando perfil...</p>
   }
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <div className="mx-auto max-w-4xl space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-4xl font-bold text-white flex items-center gap-3">
-          <UserCircle className="h-12 w-12 text-purple-600" />
+        <h1 className="flex items-center gap-3 text-3xl font-bold text-foreground md:text-4xl">
+          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-fuchsia-500 to-violet-500 text-white shadow-lg shadow-fuchsia-500/30">
+            <UserCircle className="h-6 w-6" />
+          </span>
           Mi Perfil
         </h1>
         {!isEditing && (
           <Button
             onClick={() => setIsEditing(true)}
-            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg shadow-purple-500/50 hover:shadow-purple-500/70 transition-all"
+            className="bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-lg shadow-primary/30 transition-all hover:opacity-90"
           >
             <Edit2 className="mr-2 h-4 w-4" />
             Editar Perfil
@@ -147,52 +149,52 @@ export function Profile() {
       </div>
 
       {/* Avatar */}
-      <Card className="bg-white/10 border-white/20 p-8 shadow-lg rounded-2xl">
+      <Card className="glass-card rounded-2xl p-8">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-32 h-32 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center shadow-2xl shadow-purple-500/50 ring-4 ring-white/20">
-            <UserCircle className="w-20 h-20 text-white" />
+          <div className="flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent shadow-2xl shadow-primary/40 ring-4 ring-border">
+            <UserCircle className="h-20 w-20 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-white">{userData?.nombre}</h2>
-          <p className="text-white/70 font-medium">@{userData?.usuario}</p>
+          <h2 className="text-2xl font-bold text-foreground">{userData?.nombre}</h2>
+          <p className="font-medium text-muted-foreground">@{userData?.usuario}</p>
         </div>
       </Card>
 
       {/* Formulario */}
-      <Card className="bg-white/10 border-white/20 p-8 shadow-lg rounded-2xl">
-        <h3 className="text-2xl font-bold text-white mb-6">Información Personal</h3>
+      <Card className="glass-card rounded-2xl p-8">
+        <h3 className="mb-6 text-2xl font-bold text-foreground">Información Personal</h3>
         <div className="space-y-6">
           {/* Usuario */}
           <div className="space-y-2">
-            <Label htmlFor="usuario" className="text-white flex items-center gap-2">
-              <User className="h-4 w-4 text-purple-400" /> Usuario
+            <Label htmlFor="usuario" className="flex items-center gap-2 text-foreground">
+              <User className="h-4 w-4 text-primary" /> Usuario
             </Label>
             <Input
               id="usuario"
               value={userData.usuario}
               onChange={(e) => setUserData({ ...userData, usuario: e.target.value })}
               disabled={!isEditing}
-              className="bg-white/5 border-white/20 text-white placeholder:text-white/40 disabled:opacity-60 h-12 text-lg"
+              className="h-12 border-border bg-muted/60 text-lg text-foreground placeholder:text-muted-foreground disabled:opacity-60"
             />
           </div>
 
           {/* Nombre */}
           <div className="space-y-2">
-            <Label htmlFor="nombre" className="text-white flex items-center gap-2">
-              <UserCircle className="h-4 w-4 text-purple-400" /> Nombre Completo
+            <Label htmlFor="nombre" className="flex items-center gap-2 text-foreground">
+              <UserCircle className="h-4 w-4 text-primary" /> Nombre Completo
             </Label>
             <Input
               id="nombre"
               value={userData.nombre}
               onChange={(e) => setUserData({ ...userData, nombre: e.target.value })}
               disabled={!isEditing}
-              className="bg-white/5 border-white/20 text-white placeholder:text-white/40 disabled:opacity-60 h-12 text-lg"
+              className="h-12 border-border bg-muted/60 text-lg text-foreground placeholder:text-muted-foreground disabled:opacity-60"
             />
           </div>
 
           {/* Email */}
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-white flex items-center gap-2">
-              <Mail className="h-4 w-4 text-purple-400" /> Correo Electrónico
+            <Label htmlFor="email" className="flex items-center gap-2 text-foreground">
+              <Mail className="h-4 w-4 text-primary" /> Correo Electrónico
             </Label>
             <Input
               id="email"
@@ -200,7 +202,7 @@ export function Profile() {
               value={userData.email}
               onChange={(e) => setUserData({ ...userData, email: e.target.value })}
               disabled={!isEditing}
-              className="bg-white/5 border-white/20 text-white placeholder:text-white/40 disabled:opacity-60 h-12 text-lg"
+              className="h-12 border-border bg-muted/60 text-lg text-foreground placeholder:text-muted-foreground disabled:opacity-60"
             />
           </div>
 
@@ -208,7 +210,7 @@ export function Profile() {
             <div className="flex gap-3 pt-4">
               <Button
                 onClick={handleSave}
-                className="flex-1 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 h-12 text-lg font-semibold shadow-lg shadow-emerald-500/50 hover:shadow-emerald-500/70 transition-all"
+                className="h-12 flex-1 bg-gradient-to-r from-emerald-600 to-green-600 text-lg font-semibold text-white shadow-lg shadow-emerald-500/30 transition-all hover:opacity-90"
               >
                 <Save className="mr-2 h-5 w-5" /> Guardar Cambios
               </Button>
@@ -217,7 +219,8 @@ export function Profile() {
                   setUserData(originalData)
                   setIsEditing(false)
                 }}
-                className="flex-1 bg-white/10 hover:bg-white/20 border border-white/20 text-white h-12 text-lg font-semibold shadow-lg transition-all"
+                variant="outline"
+                className="h-12 flex-1 border-border bg-muted/60 text-lg font-semibold text-foreground transition-all hover:bg-muted"
               >
                 Cancelar
               </Button>
@@ -227,55 +230,56 @@ export function Profile() {
       </Card>
 
       {/* Cerrar Sesión */}
-      <Card className="bg-white/10 border-white/20 p-8 shadow-lg rounded-2xl">
-        <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-          <LogOut className="h-6 w-6 text-blue-400" /> Sesión
+      <Card className="glass-card rounded-2xl p-8">
+        <h3 className="mb-4 flex items-center gap-2 text-2xl font-bold text-foreground">
+          <LogOut className="h-6 w-6 text-primary" /> Sesión
         </h3>
-        <p className="text-white/70 mb-6 font-medium">
+        <p className="mb-6 font-medium text-muted-foreground">
           Puedes cerrar tu sesión cuando quieras. Tu token será eliminado del navegador.
         </p>
         <Button
           onClick={handleLogout}
-          className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white h-12 px-8 font-semibold shadow-lg shadow-blue-500/40 transition-all border border-blue-400/30"
+          className="h-12 bg-gradient-to-r from-primary to-accent px-8 font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition-all hover:opacity-90"
         >
           Cerrar Sesión
         </Button>
       </Card>
 
       {/* Zona Peligrosa */}
-      <Card className="bg-white/10 border-white/20 p-8 shadow-lg rounded-2xl">
-        <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-          <Trash2 className="h-6 w-6 text-red-500" /> Zona Peligrosa
+      <Card className="rounded-2xl border-destructive/30 bg-destructive/5 p-8 shadow-lg backdrop-blur-xl">
+        <h3 className="mb-4 flex items-center gap-2 text-2xl font-bold text-foreground">
+          <Trash2 className="h-6 w-6 text-destructive" /> Zona Peligrosa
         </h3>
-        <p className="text-red-400 mb-6 font-medium">
+        <p className="mb-6 font-medium text-destructive">
           Una vez que elimines tu cuenta, no hay vuelta atrás. Ten cuidado.
         </p>
 
         {!showDeleteConfirm ? (
           <Button
             onClick={() => setShowDeleteConfirm(true)}
-            className="bg-red-600 hover:bg-red-700 text-white h-12 px-8 font-semibold shadow-lg shadow-red-500/50 transition-all border border-red-400/30"
+            className="h-12 bg-destructive px-8 font-semibold text-destructive-foreground shadow-lg shadow-destructive/30 transition-all hover:opacity-90"
           >
             <Trash2 className="mr-2 h-5 w-5" /> Eliminar Cuenta
           </Button>
         ) : (
           <div className="space-y-4">
-            <div className="bg-red-500/10 border-2 border-red-400/30 rounded-lg p-4">
-              <p className="text-white font-semibold mb-2">¿Estás seguro?</p>
-              <p className="text-red-300 text-sm">
+            <div className="rounded-lg border-2 border-destructive/30 bg-destructive/10 p-4">
+              <p className="mb-2 font-semibold text-foreground">¿Estás seguro?</p>
+              <p className="text-sm text-destructive">
                 Esto eliminará permanentemente tu cuenta y todos tus datos.
               </p>
             </div>
             <div className="flex gap-3">
               <Button
                 onClick={handleDelete}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white h-12 font-semibold shadow-lg shadow-red-500/50 border border-red-400/30 transition-all"
+                className="h-12 flex-1 bg-destructive font-semibold text-destructive-foreground shadow-lg shadow-destructive/30 transition-all hover:opacity-90"
               >
                 Sí, eliminar mi cuenta
               </Button>
               <Button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="flex-1 bg-white/10 hover:bg-white/20 border border-white/20 text-white h-12 font-semibold shadow-lg transition-all"
+                variant="outline"
+                className="h-12 flex-1 border-border bg-muted/60 font-semibold text-foreground transition-all hover:bg-muted"
               >
                 Cancelar
               </Button>
